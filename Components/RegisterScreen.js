@@ -32,42 +32,83 @@ class RegisterScreen extends React.Component {
   authListener(){
     firebase.auth().onAuthStateChanged((user)=>{
       if(user){
-        this.props.navigation.navigate('Home',{user})
+        fetch('https://radiant-lowlands-92209.herokuapp.com/signup', {
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            email: this.state.email,
+            phoneNumber: this.state.phoneNumber,
+            username: this.state.username
+
+          }),
+        })
+        .then((response) => response.json())
+        .then((responseJson) => {
+          if(responseJson.success){
+            this.props.navigation.navigate('Home',{user})
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+
       }
     })
   }
 
   register() {
-    if(this.state.password.trim() == this.state.passwordRepeat.trim() && this.state.password.trim().length >5){
-      firebase.auth().createUserWithEmailAndPassword(this.state.email.trim(), this.state.password.trim())
-      .then((userData)=>{
-        this.authListener();
-      })
-      .catch((error) =>{
-        // Handle Errors here.
-        var errorCode = error.code;
-        var errorMessage = error.message;
-        this.setState({errorMessage})
-      });
-    }
-    else{
-      if(this.state.password.trim().length < 6){
-        this.setState({errorMessage: "Password has to be atleast 6 characters"})
+
+    fetch('https://radiant-lowlands-92209.herokuapp.com/check', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        phoneNumber: this.state.phoneNumber,
+        username: this.state.username
+
+      }),
+    })
+    .then((response) => response.json())
+    .then((responseJson) => {
+      if(!responseJson.user){ //username and phonenumber not taken
+        if(this.state.password.trim() == this.state.passwordRepeat.trim() && this.state.password.trim().length >5){
+          firebase.auth().createUserWithEmailAndPassword(this.state.email.trim(), this.state.password.trim())
+          .then((userData)=>{
+            this.authListener();
+          })
+          .catch((error) =>{
+            // Handle Errors here.
+            var errorCode = error.code;
+            var errorMessage = error.message;
+            this.setState({errorMessage})
+          });
+        }
+        else{
+          if(this.state.password.trim().length < 6){
+            this.setState({errorMessage: "Password has to be atleast 6 characters"})
+          }
+          else{
+            this.setState({errorMessage: "Passwords don't match"})
+          }
+        }
       }
       else{
-        this.setState({errorMessage: "Passwords don't match"})
+        if(responseJson.message === "username"){
+          this.setState({errorMessage: "There is already an account with this username"});
+        }
+        else{
+          this.setState({errorMessage: "There is already an account with this phone number"});
+        }
       }
-    }
-    // firebase.auth().createUserWithEmailAndPassword(this.state.email.trim(), this.state.password)
-    // .then((userData)=>{
-    //   this.authListener();
-    // })
-    // .catch(function(error) {
-    //   // Handle Errors here.
-    //   var errorCode = error.code;
-    //   var errorMessage = error.message;
-    //   this.setState({errorMessage})
-    // }.bind(this));
+    })
+    .catch((error) => {
+      console.error(error);
+    });
   }
 
   render() {

@@ -20,8 +20,11 @@ import styles from './Components/Styles'
 import LoginScreen from './Components/LoginScreen';
 import RegisterScreen from './Components/RegisterScreen';
 import HomeScreen from './Components/Home';
+import PhotoAlbumScreen from './Components/PhotoAlbum';
+
 
 export default createStackNavigator({
+
   Login: {
     screen: LoginScreen,
   },
@@ -40,9 +43,9 @@ export default createStackNavigator({
   Home: {
     screen: HomeScreen,
   },
-  // MyInfo: {
-  //   screen:MyInfoScreen,
-  // },
+  PhotoAlbum: {
+    screen:PhotoAlbumScreen,
+  },
   // CameraAccess: {
   //   screen: CameraAccess,
   // },

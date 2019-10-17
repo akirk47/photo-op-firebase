@@ -10,11 +10,13 @@ import {
   Button
 } from 'react-native';
 import styles from './Styles'
+import { StackActions, NavigationActions } from 'react-navigation';
 import firebase from '../Config/firebase';
 
 class LoginScreen extends React.Component {
   static navigationOptions ={
-    title: 'Login'
+    title: 'Login',
+    header: null
   };
 
   constructor() {
@@ -22,27 +24,32 @@ class LoginScreen extends React.Component {
     this.state ={
       email:'',
       password: '',
-      errorMessage: ''
+      errorMessage: '',
+      jsonMessage:''
     }
   }
   authListener(){
     firebase.auth().onAuthStateChanged((user)=>{
       if(user){
-        this.props.navigation.navigate('Home',{user})
+        const resetAction = StackActions.reset({
+          index: 0,
+          actions: [NavigationActions.navigate({ routeName: 'Home', params: {user}})],
+        });
+        this.props.navigation.dispatch(resetAction);
       }
     })
   }
 
-  press() {
-    firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password).
-    then((userData)=>{
+  login() {
+    firebase.auth().signInWithEmailAndPassword(this.state.email.trim(), this.state.password.trim()).
+    then(()=>{
       this.authListener();
     })
     .catch(function(error) {
       // Handle Errors here.
       var errorCode = error.code;
       var errorMessage = error.message;
-      // ...
+      console.log(errorMessage);
       this.setState({errorMessage})
     }.bind(this));
 }
@@ -59,7 +66,7 @@ class LoginScreen extends React.Component {
         <Text style={styles.textBig}>Login to PhotoOp!</Text>
         <TextInput
           style={{height: 40}}
-          placeholder="Enter your username"
+          placeholder="Enter your email"
           onChangeText={(text) => this.setState({email: text})}
         />
         <TextInput
@@ -67,7 +74,7 @@ class LoginScreen extends React.Component {
           placeholder="Enter your password"
           onChangeText={(text) => this.setState({password: text})}
         />
-        <TouchableOpacity onPress={ () => {this.press()} } style={[styles.button, styles.buttonGreen]}>
+        <TouchableOpacity onPress={ () => {this.login()} } style={[styles.button, styles.buttonGreen]}>
           <Text style={styles.buttonLabel}>Login</Text>
         </TouchableOpacity>
         <TouchableOpacity style={[styles.button, styles.buttonBlue]} onPress={ () => {this.register()} }>
@@ -75,6 +82,11 @@ class LoginScreen extends React.Component {
         </TouchableOpacity>
         {this.state.errorMessage ?
         (<Text style={{color: 'red'}}>{this.state.errorMessage}</Text>)
+          :
+        (<Text></Text>)
+        }
+        {this.state.jsonMessage ?
+        (<Text style={{color: 'red'}}>{this.state.jsonMessage}</Text>)
           :
         (<Text></Text>)
         }
