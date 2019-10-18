@@ -1,26 +1,11 @@
-import React from 'react';
-import {
-  StyleSheet,
-  View,
-  Text,
-  TouchableOpacity,
-  TextInput,
-  ListView,
-  Alert,
-  Button,
-  RefreshControl,
-  Image,
-  ScrollView
-} from 'react-native';
-import { createStackNavigator } from 'react-navigation';
-import firebase from './Config/firebase';
 
-import styles from './Components/Styles'
+import { createStackNavigator } from 'react-navigation';
 
 import LoginScreen from './Components/LoginScreen';
 import RegisterScreen from './Components/RegisterScreen';
 import HomeScreen from './Components/Home';
-import PhotoAlbumScreen from './Components/PhotoAlbum';
+import DataCollectionScreen from './Components/DataCollection';
+import IndividualReportScreen from './Components/IndividualReport';
 
 
 export default createStackNavigator({
@@ -31,34 +16,15 @@ export default createStackNavigator({
   Register: {
     screen: RegisterScreen,
   },
-  // MealPlan: {
-  //   screen: MealPlanScreen,
-  // },
-  // GroceryList: {
-  //   screen: GroceryListScreen,
-  // },
-  // Meal: {
-  //   screen: MealScreen,
-  // },
   Home: {
     screen: HomeScreen,
   },
-  PhotoAlbum: {
-    screen:PhotoAlbumScreen,
+  DataCollection: {
+    screen:DataCollectionScreen,
   },
-  // CameraAccess: {
-  //   screen: CameraAccess,
-  // },
-  // HorizontalMealScroll: {
-  //   screen: HorizontalMealScroll,
-  // }
+  IndividualReport: {
+    screen:IndividualReportScreen,
+  },
+  
 }, {initialRouteName: 'Login'});
 
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     backgroundColor: '#fff',
-//     alignItems: 'center',
-//     justifyContent: 'center',
-//   },
-// });`

@@ -1,13 +1,9 @@
 import React from 'react';
 import {
-  StyleSheet,
   View,
   Text,
   TouchableOpacity,
   TextInput,
-  ListView,
-  Alert,
-  Button
 } from 'react-native';
 import styles from './Styles'
 import { StackActions, NavigationActions } from 'react-navigation';
