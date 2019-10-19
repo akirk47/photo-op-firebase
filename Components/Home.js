@@ -11,8 +11,12 @@ import Constants from 'expo-constants';
 
 
 export default class Home extends React.Component {
+  static navigationOptions = {
+    title: 'Home',
+  };
 
   render(){
+    const { navigation } = this.props;
     return (
       <SafeAreaView style={styles.container}>
         <View style={styles.space}>
@@ -22,7 +26,7 @@ export default class Home extends React.Component {
           <Button
             title="Press me"
             onPress={() => this.props.navigation.navigate('DataCollection',{
-              user:this.props.user
+              user:this.props.navigation.getParam('user', {})
         })}
             color= '#008000'
           />
@@ -35,7 +39,9 @@ export default class Home extends React.Component {
           <Button
             title="Press me"
             color="#f194ff"
-            onPress={() => Alert.alert('Button with adjusted color pressed')}
+            onPress={() =>  navigation.navigate('AllReports',{
+              user: navigation.getParam('user', {})
+            })}
           />
         </View>
   

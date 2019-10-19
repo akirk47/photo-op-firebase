@@ -7,7 +7,11 @@ import {
 } from 'react-native';
 import styles from './Styles'
 import { StackActions, NavigationActions } from 'react-navigation';
-import firebase from '../Config/firebase';
+import {firebaseAuth} from '../Config/firebase';
+import { Dimensions } from "react-native";
+
+
+const screenWidth = Dimensions.get("window").width;
 
 class LoginScreen extends React.Component {
   static navigationOptions ={
@@ -25,8 +29,9 @@ class LoginScreen extends React.Component {
     }
   }
   authListener(){
-    firebase.auth().onAuthStateChanged((user)=>{
+    firebaseAuth().onAuthStateChanged((user)=>{
       if(user){
+        console.log(user, 'login')
         const resetAction = StackActions.reset({
           index: 0,
           actions: [NavigationActions.navigate({ routeName: 'Home', params: {user}})],
@@ -37,8 +42,8 @@ class LoginScreen extends React.Component {
   }
 
   login() {
-    firebase.auth().signInWithEmailAndPassword(this.state.email.trim(), this.state.password.trim()).
-    then(()=>{
+    firebaseAuth().signInWithEmailAndPassword(this.state.email.trim(), this.state.password.trim())
+    .then(()=>{
       this.authListener();
     })
     .catch(function(error) {
@@ -57,16 +62,16 @@ class LoginScreen extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text>{this.state.message}</Text>
-
-        <Text style={styles.textBig}>Login to PhotoOp!</Text>
+        <Text style={styles.textBig}>Optima ROM</Text>
         <TextInput
-          style={{height: 40}}
+          style={{height: 40, width: screenWidth}}
+          textAlign={'center'}
           placeholder="Enter your email"
           onChangeText={(text) => this.setState({email: text})}
         />
         <TextInput
-          style={{height: 40}}
+          style={{height: 40, width: screenWidth}}
+          textAlign={'center'}
           placeholder="Enter your password"
           onChangeText={(text) => this.setState({password: text})}
         />
