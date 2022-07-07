@@ -15,7 +15,7 @@
     "firebase": "^5.5.8",
     "firebase-admin": "^6.4.0",
     "linear-gradient": "^1.0.6",
-    "moment": "^2.23.0",
+    "moment": "^2.29.4",
     "native-base": "^2.11.0",
     "react": "16.8.3",
     "react-native": "https://github.com/expo/react-native/archive/sdk-34.0.2.tar.gz",
